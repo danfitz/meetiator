@@ -14,8 +14,18 @@ body {
 }
 
 header {
+    position: relative;
     width: 100%;
-    box-shadow: 0 0 0.5rem 0.2rem #bbb;
+    box-shadow: 0 0 0.1rem 0.1rem #eee;
+}
+
+#currentTime {
+    position: absolute;
+    z-index: -1;
+    left: 0;
+    height: 0.25rem;
+    width: 0%;
+    background-color: #096192;
 }
 
 header h1 {
@@ -35,10 +45,4 @@ header h1 {
     position: absolute;
     bottom: 10px;
     right: 10px;
-}
-
-#timer {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
 }

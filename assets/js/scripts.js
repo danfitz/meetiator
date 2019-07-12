@@ -31,22 +31,30 @@ $(document).ready(function() {
     
     $("#startPrompt form").on("submit", (event) => {
         event.preventDefault();
-        // Grab values
+        
+        // Grab topic question and time from start prompt
         const $topic = $("#topic").val();
-        let $time = parseInt($("#time").val());
+        let $time = parseInt($("#time").val()) * 60; // in seconds
+
         // Hide start prompt
         $("#startPrompt").css("display", "none");
-        // Display topic question at top
-        $("header").removeClass("hidden").html(`<h1>${$topic}</h1>`);
-        // Display timer at bottom
-        $("#timer").removeClass("hidden").html(`<h2>Time left: ${$time} min</h2>`)
-        const timer = setInterval(() => {
-            $time--;
-            $("#timer").empty().html(`<h2>Time left: ${$time} min</h2>`);
 
-            if ($time === 0) {
-                clearInterval(timer);
-                $("#timer").css("color", "red");
+        // Display topic question at top
+        $("header").removeClass("hidden").append(`<h1>${$topic}</h1>`);
+
+        // use setInterval() to decrease timer in increments of 1 minute (or 60,000 milliseconds)
+        let timeLeft = $time;
+        const intervalTimer = setInterval(() => {
+            // Decrease timeLeft by 1 and convert difference to percentage
+            timeLeft--;
+            const timeLeftPercent = 100 - (timeLeft / $time * 100);
+            console.log(timeLeftPercent);
+            // Update width of progress bar
+            $("#currentTime").css("width", `${timeLeftPercent}%`);
+            // If time hits 0, clearInterval() and update styles
+            if (timeLeft === 0) {
+                clearInterval(intervalTimer);
+                // Show prompt saying meeting is over
             }
         }, 1000);
 
