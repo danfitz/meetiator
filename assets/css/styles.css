@@ -1,3 +1,9 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Playfair Display", serif;
+}
+
 .wrapper {
     margin: 0 auto;
     width: 80%;
@@ -5,6 +11,17 @@
 
 .hidden {
     display: none;
+}
+
+header {
+    width: 100%;
+    box-shadow: 0 0 0.5rem 0.2rem #bbb;
+}
+
+header h1 {
+    margin: 0;
+    padding: 0.5rem;
+    text-align: center;
 }
 
 .fullPage {
@@ -18,4 +35,10 @@
     position: absolute;
     bottom: 10px;
     right: 10px;
+}
+
+#timer {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
 }
