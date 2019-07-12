@@ -1,0 +1,21 @@
+.wrapper {
+    margin: 0 auto;
+    width: 80%;
+}
+
+.hidden {
+    display: none;
+}
+
+.fullPage {
+    position: absolute;
+    top: 30%;
+    left: 10%;
+    text-align: justify;
+}
+
+#addWheel {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}

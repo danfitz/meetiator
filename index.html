@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meetiator</title>
+    <meta name="description" content="Meetiator mediates your meetings for you, helping you and your team stay on track and on target to your goals. When the meeting ends, you get a pretty report that can be shared as a print-out or PDF.">
+    <meta name="keywords" content="meetings, planning, strategy, focus, attention, one-pager, report">
+    <link type="text/css" rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <header>
+        <!--Topic question goes here-->
+    </header>
+    <main>
+        <div id="addWheel" class="hidden">
+            <input id="showActions" type="button" value="+">
+            <input id="addTask" type="button" value="Task">
+            <input id="addQuestion" type="button" value="Question">
+            <input id="addFlag" type="button" value="Flag">
+            <input id="addAttendant" type="button" value="Person">
+        </div>
+        <div id="startPrompt" class="wrapper fullPage">
+            <p>Meetiator mediates your meetings for you, helping you and your team stay on track and on target to your goals. When the meeting ends, you get a pretty report that can be shared as a print-out or PDF.</p>
+            <form>
+                <input id="topic" type="text" placeholder="Insert topic question...">
+                <input id="time" type="number" placeholder="est. meeting time in min...">
+                <input type="submit" value="Start">
+            </form>
+        </div>
+        <section id="flags">
+            <!--Flags go here-->
+        </section>
+        <section id="questions">
+            <!--Questions go here-->
+        </section>
+        <section id="tasks">
+            <!--Tasks go here-->
+        </section>
+    </main>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+    <script type="text/javascript" src="assets/js/scripts.js"></script>
+</body>
+</html>
