@@ -8,36 +8,43 @@
     <meta name="description" content="Meetiator mediates your meetings for you, helping you and your team stay on track and on target to your goals. When the meeting ends, you get a pretty report that can be shared as a print-out or PDF.">
     <meta name="keywords" content="meetings, planning, strategy, focus, attention, one-pager, report">
     <link type="text/css" rel="stylesheet" href="assets/css/styles.css">
-    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,700&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600|Playfair+Display:400,700&display=swap" rel="stylesheet"> 
 </head>
 <body>
     <header class="hidden">
         <div id="currentTime"></div>
-        <!--Topic question goes here-->
+        <h1><!--Topic question goes here--></h1>
     </header>
     <main>
-        <div id="addWheel" class="hidden">
+        <!--Starting prompt that disappears upon form submission-->
+        <div id="startPrompt" class="wrapper fullPage">
+            <p>Meetiator mediates your meetings for you, helping you and your team stay on track and on target to your goals. When the meeting ends, you get a pretty report that can be shared as a print-out or PDF.</p>
+            <form autocomplete="off">
+                <input id="topic" class="editable" type="text" placeholder="Insert topic question..." required>
+                <div id="timeContainer">Meeting time: <input id="time" class="editable" type="number" placeholder="0" required> min</div>
+                <input type="submit" value="START">
+            </form>
+        </div>
+
+        <!--System controls that appear after starting prompt-->
+        <div id="sysOptions" class="hidden">
+            <input id="restart" type="button" value="RESTART">
+            <input id="print" type="button" value="PRINT">
+            <input id="pdf" type="button" value="SAVE PDF">
             <input id="showActions" type="button" value="+">
             <input id="addTask" type="button" value="Task">
             <input id="addQuestion" type="button" value="Question">
             <input id="addFlag" type="button" value="Flag">
             <input id="addAttendant" type="button" value="Person">
         </div>
-        <div id="startPrompt" class="wrapper fullPage">
-            <p>Meetiator mediates your meetings for you, helping you and your team stay on track and on target to your goals. When the meeting ends, you get a pretty report that can be shared as a print-out or PDF.</p>
-            <form>
-                <input id="topic" type="text" placeholder="Insert topic question...">
-                <input id="time" type="number" placeholder="est. meeting time in min...">
-                <input type="submit" value="Start">
-            </form>
-        </div>
-        <section id="flags">
+
+        <section id="flags" class="wrapper">
             <!--Flags go here-->
         </section>
-        <section id="questions">
+        <section id="questions" class="wrapper">
             <!--Questions go here-->
         </section>
-        <section id="tasks">
+        <section id="tasks" class="wrapper">
             <!--Tasks go here-->
         </section>
     </main>

@@ -1,3 +1,5 @@
+/* GENERAL STYLING */
+
 body {
     margin: 0;
     padding: 0;
@@ -9,14 +11,67 @@ body {
     width: 80%;
 }
 
+/* INPUT STYLING */
+
+input {
+    font-family: "Open Sans", sans-serif;
+    border: none;
+    -moz-appearance: textfield;
+    margin: 1rem auto;
+    font-size: 1.5rem;
+}
+
+.editable {
+    background-color: #eee;
+}
+
+.locked {
+    background-color: white;
+    color: black;
+}
+
+input[type="submit"], input[type="button"] {
+    font-size: 2rem;
+    color: white;
+    background-color: #096192;
+}
+
+#topic {
+    width: 100%;
+    font-size: 3rem;
+}
+
+#time, #timeContainer {
+    font-family: "Open Sans", sans-serif;
+    font-size: 2rem;
+}
+
+#time::-webkit-inner-spin-button, 
+#time::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+}
+
+/* CLASSES FOR DISPLAYING AND HIDING PROMPTS & TOOLS */
+
 .hidden {
     display: none;
 }
 
+
+.fullPage {
+    position: absolute;
+    top: 30%;
+    left: 10%;
+    text-align: justify;
+}
+
+/* STYLING FOR TOPIC QUESTION + PROGRESS BAR */
+
 header {
     position: relative;
     width: 100%;
-    box-shadow: 0 0 0.1rem 0.1rem #eee;
+    box-shadow: 0 0 0.1rem 0.1rem #ccc;
 }
 
 #currentTime {
@@ -34,14 +89,36 @@ header h1 {
     text-align: center;
 }
 
-.fullPage {
-    position: absolute;
-    top: 30%;
-    left: 10%;
-    text-align: justify;
+/* CONTENT BLOCKS - GENERAL STYLING */
+
+.content {
+    border-width: 0.1px;
+    border-style: solid;
+    border-color: #ccc;
 }
 
-#addWheel {
+/* CONTENT BLOCKS - STYLING FOR FLAGS */
+
+#flags {
+    width: 90%;
+    margin-top: 2rem;
+}
+
+.flag {
+    margin: 0 auto;
+    border-top-width: 3px;
+    border-top-color: darkred;
+}
+
+.fa-flag {
+    display: inline;
+    margin: 0 10px;
+    color: darkred;
+}
+
+/* STYLING FOR SYSTEM OPTIONS */
+
+#sysOptions {
     position: absolute;
     bottom: 10px;
     right: 10px;

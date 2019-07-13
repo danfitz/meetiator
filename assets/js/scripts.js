@@ -1,15 +1,8 @@
 class Content {
-    constructor(text="", assignee=undefined, dueDate=undefined) {
+    constructor(text=undefined, assignee=undefined, dueDate=undefined) {
         this.text = text;
         this.assignee = assignee;
         this.dueDate = dueDate;
-    }
-};
-
-class Task {
-    constructor() {
-        this.dueDate = "";
-        this.assignee = undefined;
     }
 };
 
@@ -27,8 +20,14 @@ class Attendant {
 };
 
 $(document).ready(function() {
+
+    // Starts user at topic question prompt
+    $("#topic").focus();
+    
+    // ** ARRAY FOR ATTENDANT OBJECTS **
     const attendants = [];
     
+    // ** START PROMPT SUBMISSION **
     $("#startPrompt form").on("submit", (event) => {
         event.preventDefault();
         
@@ -38,25 +37,76 @@ $(document).ready(function() {
 
         // Hide start prompt
         $("#startPrompt").css("display", "none");
-
         // Display topic question at top
-        $("header").removeClass("hidden").append(`<h1>${$topic}</h1>`);
+        $("header").removeClass("hidden")
+        $("header h1").text(`${$topic}`);
+        // Display system options
+        $("#sysOptions").removeClass("hidden");
 
-        // use setInterval() to decrease timer in increments of 1 minute (or 60,000 milliseconds)
+        // use setInterval() to advance progress bar in increments of 100 milliseconds
         let timeLeft = $time;
         const intervalTimer = setInterval(() => {
-            // Decrease timeLeft by 1 and convert difference to percentage
-            timeLeft--;
+            // Decrease timeLeft by 0.1 seconds (100 milliseconds)
+            timeLeft -= 0.1;
+            // Convert difference to percentage
             const timeLeftPercent = 100 - (timeLeft / $time * 100);
-            console.log(timeLeftPercent);
             // Update width of progress bar
             $("#currentTime").css("width", `${timeLeftPercent}%`);
-            // If time hits 0, clearInterval() and update styles
-            if (timeLeft === 0) {
+            // If time hits 0, clearInterval() and send to endPrompt
+            if (timeLeft <= 0) {
                 clearInterval(intervalTimer);
-                // Show prompt saying meeting is over
+                // ** ACTIONS TO PERFORM WHEN TIMER ENDS **
             }
-        }, 1000);
-
+        }, 100);
     });
+
+    // ** FLAG CREATION **
+    $("#addFlag").on("click", function() {
+        // HTML For flag
+        const flagHtml = `
+            <div class="content flag">
+                <i class="fas fa-flag"></i>
+                <input class="editable" type="text" placeholder="Something to flag...">
+                <span class="hidden">Edit</span>
+            </div>
+        `;
+
+        // Adds HTML into flags section
+        const $newFlag = $("#flags").append(flagHtml);
+
+        // Sets focus on input box inside newly added flag
+        $newFlag.find("input").focus();
+    });
+
+    // function resizeInput() {
+    //     $(this).attr('size', $(this).val().length);
+    // }
+    
+    // $('input[type="text"]')
+    //     // event handler
+    //     .keyup(resizeInput)
+    //     // resize on page load
+    //     .each(resizeInput);
+
+    // ** FLAG SUBMISSION **
+    $("#flags").on("keypress", ".flag input", function(event) {
+        if (event.which == 13) {
+            $(this).toggleClass("editable locked").prop("disabled", true);
+            $(this).siblings("span").toggleClass("hidden");
+        } else {
+            $(this).attr("size", $(this).val().length);
+        }
+    });
+
+    // ** FLAG EDIT **
+    $("#flags").on("click", "span", function() {
+        $(this).toggleClass("hidden");
+        $(this).siblings("input").toggleClass("editable locked").prop("disabled", false).focus();
+    });
+
+    // Task creation
+
+    // Question creation
+
+    // People creation
 });
