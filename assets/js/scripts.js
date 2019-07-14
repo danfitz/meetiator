@@ -1,32 +1,92 @@
+/* ========== CLASSES ========== */
+
 class Content {
-    constructor(text=undefined, assignee=undefined, dueDate=undefined) {
+    constructor(id, type, text, dueDate=undefined, attendantId=undefined) {
+        this.id = id;
+        this.type = type;
         this.text = text;
-        this.assignee = assignee;
         this.dueDate = dueDate;
+        this.attendantId = attendantId;
     }
 };
 
 class Attendant {
-    constructor(name=`Person ${attendants.length + 1}`, color="black") {
+    constructor(id, name, color, tasks=[]) {
+        this.id = id;
         this.name = name;
         this.color = color;
+        this.tasks = tasks;
     }
-    addAttendant(arr, name, color) {
-        const attendant = new Attendant(name, color);
-        arr.push(attendant);
-        return attendant;
-    }
-    
 };
+
+
+
+/* ========== DATA RESOURCES ========== */
+
+// Variables for assigning unique IDs to new attendants or content (will be incremented by 1 every time it's used) 
+let attendantIdCount = 1000;
+let taskIdCount = 2000;
+let questionIdCount = 3000;
+
+// Empty arrays to store objects created using above classes
+const attendants = [];
+const tasks = [];
+const questions = [];
+
+// Populated array of unique colors & function for grabbing random color in array
+let colors = ["green", "yellow", "orange", "pink", "purple", "lilac", "black", "brown", "grey", "cyan", "maroon", "darkslategray", "deeppink"];
+
+const randColor = function() {
+    const randIndex = Math.floor(Math.random() * colors.length);
+    return colors.splice(randIndex, 1)[0]; // 0 index required because splice returns an array of 1 item
+}
+
+
+
+/* ========== CUSTOM FUNCTIONS ========== */
+
+const addAttendant = function(name) {
+    // Create new attendant with ID counter and randColor() function
+    const attendant = new Attendant(attendantIdCount, name, randColor());
+    // Add to array
+    attendants.push(attendant);
+    // Increment ID counter
+    attendantIdCount++;
+
+    return attendant;
+}
+
+const addTask = function(type, text) {
+    // Create new task with ID counter
+    const task = new Content(taskIdCount, type, text);
+    // Add to array
+    tasks.push(task);
+    // Increment ID counter
+    taskIdCount++;
+    
+    return task; 
+}
+
+const addQuestion = function(type, text) {
+    // Create new question with ID counter
+    const question = new Content(questionIdCount, type, text);
+    // Add to array
+    questions.push(question);
+    // Increment ID counter
+    questionIdCount++;
+
+    return question; 
+}
+
+
+
+/* ========== JQUERY ========== */
 
 $(document).ready(function() {
 
     // Starts user at topic question prompt
     $("#topic").focus();
-    
-    // ** ARRAY FOR ATTENDANT OBJECTS **
-    const attendants = [];
-    
+        
     // ** START PROMPT SUBMISSION **
     $("#startPrompt form").on("submit", (event) => {
         event.preventDefault();
@@ -45,66 +105,81 @@ $(document).ready(function() {
 
         // use setInterval() to advance progress bar in increments of 100 milliseconds
         let timeLeft = $time;
-        const intervalTimer = setInterval(() => {
+
+        const progressBar = setInterval(() => {
             // Decrease timeLeft by 0.1 seconds (100 milliseconds)
             timeLeft -= 0.1;
-            // Convert difference to percentage
+            // Convert difference between $time and timeLeft to percentage
             const timeLeftPercent = 100 - (timeLeft / $time * 100);
             // Update width of progress bar
             $("#currentTime").css("width", `${timeLeftPercent}%`);
-            // If time hits 0, clearInterval() and send to endPrompt
+            // If time hits 0, clearInterval() and do ????????
             if (timeLeft <= 0) {
-                clearInterval(intervalTimer);
+                clearInterval(progressBar);
                 // ** ACTIONS TO PERFORM WHEN TIMER ENDS **
             }
         }, 100);
     });
 
-    // ** FLAG CREATION **
+    // ** FLAG PROMPT **
     $("#addFlag").on("click", function() {
-        // HTML For flag
+        // HTML For flag (max character count is 200 for textarea)
         const flagHtml = `
             <div class="content flag">
                 <i class="fas fa-flag"></i>
-                <input class="editable" type="text" placeholder="Something to flag...">
-                <span class="hidden">Edit</span>
+                <textarea class="editable" rows="1" maxLength="200" placeholder="Something to flag..."></textarea>
+                <div class="contentControls hidden printHidden">
+                    <span class="edit">Edit</span>
+                    <span class="delete">Delete</span>
+                </div>
             </div>
         `;
 
-        // Adds HTML into flags section
+        // Add HTML into flags section
         const $newFlag = $("#flags").append(flagHtml);
 
-        // Sets focus on input box inside newly added flag
-        $newFlag.find("input").focus();
+        // Set focus on input box inside newly added flag
+        $newFlag.find("textarea").focus();
     });
 
-    // function resizeInput() {
-    //     $(this).attr('size', $(this).val().length);
-    // }
-    
-    // $('input[type="text"]')
-    //     // event handler
-    //     .keyup(resizeInput)
-    //     // resize on page load
-    //     .each(resizeInput);
-
     // ** FLAG SUBMISSION **
-    $("#flags").on("keypress", ".flag input", function(event) {
+    $("#flags").on("keydown", ".flag textarea", function(event) {
+        // If user presses enter...
         if (event.which == 13) {
+            // Lock flag text submission
             $(this).toggleClass("editable locked").prop("disabled", true);
-            $(this).siblings("span").toggleClass("hidden");
-        } else {
-            $(this).attr("size", $(this).val().length);
+            // Display edit button
+            $(this).siblings(".contentControls").toggleClass("hidden");
+        }
+
+        // For every other keypress, always update height of textarea box to match height of scroll bar
+        // This basically just increases height of textarea in case of line breaks
+        else {
+            console.log($(this).prop("scrollHeight"));
+            $(this).css("height", `${$(this).prop("scrollHeight")}px`)
         }
     });
 
     // ** FLAG EDIT **
-    $("#flags").on("click", "span", function() {
-        $(this).toggleClass("hidden");
-        $(this).siblings("input").toggleClass("editable locked").prop("disabled", false).focus();
+    $("#flags").on("click", ".edit", function() {
+        // Hide content controls
+        $(this).parent().toggleClass("hidden");
+        // Traverse up DOM to find textarea, then make it editable and focus on it
+        $(this).parent().siblings("textarea").toggleClass("editable locked").prop("disabled", false).focus();
     });
 
-    // Task creation
+    // ** FLAG DELETE **
+    $("#flags").on("click", ".delete", function() {
+        if (confirm("This will delete your content permanently.\nProceed?")) {
+            $(this).parents(".flag").remove();
+        };
+    });
+
+    // ** TASK PROMPT **
+
+    // ** TASK SUBMISSION **
+
+    // ** TASK EDIT **
 
     // Question creation
 

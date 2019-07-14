@@ -11,23 +11,14 @@ body {
     width: 80%;
 }
 
-/* INPUT STYLING */
+/* GENERAL INPUT STYLING */
 
-input {
+input, textarea {
     font-family: "Open Sans", sans-serif;
     border: none;
     -moz-appearance: textfield;
     margin: 1rem auto;
-    font-size: 1.5rem;
-}
-
-.editable {
-    background-color: #eee;
-}
-
-.locked {
-    background-color: white;
-    color: black;
+    font-size: 1rem;
 }
 
 input[type="submit"], input[type="button"] {
@@ -36,23 +27,7 @@ input[type="submit"], input[type="button"] {
     background-color: #096192;
 }
 
-#topic {
-    width: 100%;
-    font-size: 3rem;
-}
-
-#time, #timeContainer {
-    font-family: "Open Sans", sans-serif;
-    font-size: 2rem;
-}
-
-#time::-webkit-inner-spin-button, 
-#time::-webkit-outer-spin-button { 
-    -webkit-appearance: none; 
-    margin: 0; 
-}
-
-/* CLASSES FOR DISPLAYING AND HIDING PROMPTS & TOOLS */
+/* CLASSES FOR DISPLAYING AND HIDING ELEMENTS */
 
 .hidden {
     display: none;
@@ -66,10 +41,50 @@ input[type="submit"], input[type="button"] {
     text-align: justify;
 }
 
+
+
+
+
+/* START PROMPT STYLING */
+
+#startPrompt form > * {
+    margin: 1rem 0;
+}
+
+#appName {
+    display: block;
+    font-size: 3rem;
+}
+
+#topic {
+    width: 100%;
+    font-size: 3rem;
+}
+
+#timeInput, #attendantsInput {
+    width: 100%;
+}
+
+#time {
+    width: 4rem;
+}
+
+#namesOfAttendants {
+    width: 30rem;
+    max-width: 100%;
+}
+
+#time::-webkit-inner-spin-button, 
+#time::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+}
+
 /* STYLING FOR TOPIC QUESTION + PROGRESS BAR */
 
 header {
     position: relative;
+    margin-bottom: 2rem;
     width: 100%;
     box-shadow: 0 0 0.1rem 0.1rem #ccc;
 }
@@ -89,37 +104,89 @@ header h1 {
     text-align: center;
 }
 
-/* CONTENT BLOCKS - GENERAL STYLING */
-
-.content {
-    border-width: 0.1px;
-    border-style: solid;
-    border-color: #ccc;
-}
-
-/* CONTENT BLOCKS - STYLING FOR FLAGS */
-
-#flags {
-    width: 90%;
-    margin-top: 2rem;
-}
-
-.flag {
-    margin: 0 auto;
-    border-top-width: 3px;
-    border-top-color: darkred;
-}
-
-.fa-flag {
-    display: inline;
-    margin: 0 10px;
-    color: darkred;
-}
-
 /* STYLING FOR SYSTEM OPTIONS */
 
 #sysOptions {
     position: absolute;
     bottom: 10px;
     right: 10px;
+}
+
+
+
+
+
+/* CONTENT BLOCKS - GENERAL STYLING */
+
+.content {
+    max-width: 90%;
+    position: relative;
+    margin: 1rem auto;
+    border-width: 0.1px;
+    border-style: solid;
+    border-color: #ccc;
+}
+
+.fa-flag {
+    padding: 0.5rem;
+    color: white;
+    position: absolute;
+    top: -12px;
+    left: -12px;
+    border-radius: 180px;
+    background-color: darkred;
+}
+
+.content textarea {
+    display: block;
+    width: 95%;
+    resize: none;
+    font-family: "Playfair Display", serif;
+}
+
+.content .contentControls {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+}
+
+.editable {
+    background-color: whitesmoke;
+}
+
+.locked {
+    background-color: white;
+    color: black;
+}
+
+/* CONTENT BLOCKS - STYLING FOR FLAGS */
+
+#flags {
+    width: 1000px;
+}
+
+.flag {
+    border-top-width: 3px;
+    border-top-color: darkred;
+}
+
+
+
+
+
+/* CLASS FOR CHOOSING WHAT ELEMENTS TO HIDE IN PRINT-OUT */
+
+@media print {
+    .printHidden {
+        display: none;
+    }
+
+    .fa-flag {
+        color: darkred;
+    }
+}
+
+@page {
+    size: auto;
+    margin: 50px;
 }
