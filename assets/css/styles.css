@@ -1,6 +1,14 @@
 /* GENERAL STYLING */
 
 body {
+    /* COLOR VARIABLES */
+    --buttonColor: #096192;
+    --inputColor: whitesmoke;
+    --borderColor: #ddd;
+    --flagColor: #c00;
+    --taskColor: #f0e130;
+    --questionColor: #429E9D;
+
     margin: 0;
     padding: 0;
     font-family: "Playfair Display", serif;
@@ -24,7 +32,7 @@ input, textarea {
 input[type="submit"], input[type="button"] {
     font-size: 2rem;
     color: white;
-    background-color: #096192;
+    background-color: var(--buttonColor);
 }
 
 /* CLASSES FOR DISPLAYING AND HIDING ELEMENTS */
@@ -86,7 +94,7 @@ header {
     position: relative;
     margin-bottom: 2rem;
     width: 100%;
-    box-shadow: 0 0 0.1rem 0.1rem #ccc;
+    box-shadow: 0 0 0.1rem 0.1rem var(--borderColor);
 }
 
 #currentTime {
@@ -95,7 +103,7 @@ header {
     left: 0;
     height: 0.25rem;
     width: 0%;
-    background-color: #096192;
+    background-color: var(--buttonColor);
 }
 
 header h1 {
@@ -118,23 +126,48 @@ header h1 {
 
 /* CONTENT BLOCKS - GENERAL STYLING */
 
+section {
+    margin: 10rem;
+}
+
 .content {
-    max-width: 90%;
     position: relative;
     margin: 1rem auto;
     border-width: 0.1px;
     border-style: solid;
-    border-color: #ccc;
+    border-color: var(--borderColor);
 }
 
-.fa-flag {
+.fa-flag, .fa-tasks {
     padding: 0.5rem;
     color: white;
     position: absolute;
     top: -12px;
     left: -12px;
     border-radius: 180px;
-    background-color: darkred;
+}
+.fa-flag {
+    background-color: var(--flagColor);
+}
+.fa-tasks {
+    background-color: var(--taskColor);
+}
+
+.assignedAttendants {
+    position: absolute;
+    bottom: -12px;
+    left: -12px;
+}
+
+.addAttendantPrompt {
+    display: inline-block;
+    background-color: var(--inputColor);
+}
+
+.addAttendantPrompt span {
+    display: inline-block;
+    margin: 0.5rem;
+    border: 1px solid var(--borderColor);
 }
 
 .content textarea {
@@ -150,8 +183,12 @@ header h1 {
     right: 5px;
 }
 
+.addAttendant:hover, .edit:hover, .delete:hover {
+    cursor: pointer;
+}
+
 .editable {
-    background-color: whitesmoke;
+    background-color: var(--inputColor);
 }
 
 .locked {
@@ -159,18 +196,38 @@ header h1 {
     color: black;
 }
 
+/* CONTENT BLOCKS - STYLING FOR ATTENDANTS */
+
+#attendants {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+
+#attendants .attendant > input {
+    display: inline-block;
+    margin: 0 1rem;
+    width: 8rem;
+}
+
 /* CONTENT BLOCKS - STYLING FOR FLAGS */
 
 #flags {
     width: 1000px;
+    max-width: 90%;
 }
 
 .flag {
     border-top-width: 3px;
-    border-top-color: darkred;
+    border-top-color: var(--flagColor);
 }
 
+/* CONTENT BLOCKS - STYLING FOR TASKS */
 
+.task {
+    border-top-width: 3px;
+    border-top-color: var(--taskColor);
+}
 
 
 
@@ -182,7 +239,7 @@ header h1 {
     }
 
     .fa-flag {
-        color: darkred;
+        color: var(--flagColor);
     }
 }
 

@@ -1,9 +1,8 @@
 /* ========== CLASSES ========== */
 
 class Content {
-    constructor(id, type, text, dueDate=undefined, attendantId=undefined) {
+    constructor(id, text, dueDate=undefined, attendantId=undefined) {
         this.id = id;
-        this.type = type;
         this.text = text;
         this.dueDate = dueDate;
         this.attendantId = attendantId;
@@ -34,7 +33,7 @@ const tasks = [];
 const questions = [];
 
 // Populated array of unique colors & function for grabbing random color in array
-let colors = ["green", "yellow", "orange", "pink", "purple", "lilac", "black", "brown", "grey", "cyan", "maroon", "darkslategray", "deeppink"];
+let colors = ["yellow", "lemonchiffon", "khaki", "red", "lightcoral", "firebrick", "aqua", "paleturquoise", "cadetblue", "gray", "gainsboro", "lightslategray"];
 
 const randColor = function() {
     const randIndex = Math.floor(Math.random() * colors.length);
@@ -56,9 +55,9 @@ const addAttendant = function(name) {
     return attendant;
 }
 
-const addTask = function(type, text) {
+const addTask = function(text) {
     // Create new task with ID counter
-    const task = new Content(taskIdCount, type, text);
+    const task = new Content(taskIdCount, text);
     // Add to array
     tasks.push(task);
     // Increment ID counter
@@ -67,9 +66,9 @@ const addTask = function(type, text) {
     return task; 
 }
 
-const addQuestion = function(type, text) {
+const addQuestion = function(text) {
     // Create new question with ID counter
-    const question = new Content(questionIdCount, type, text);
+    const question = new Content(questionIdCount, text);
     // Add to array
     questions.push(question);
     // Increment ID counter
@@ -91,9 +90,34 @@ $(document).ready(function() {
     $("#startPrompt form").on("submit", (event) => {
         event.preventDefault();
         
+
+
         // Grab topic question and time from start prompt
         const $topic = $("#topic").val();
         let $time = parseInt($("#time").val()) * 60; // in seconds
+
+
+
+        // Grab attendants' names and create object instances
+        const $namesOfAttendants = $("#namesOfAttendants").val().split(",") // splits string into array by commas
+            .map((attendantName) => {
+                return attendantName.trim(); // removes trailing whitespaces in case there are any
+            })
+            .forEach(function(attendantName) {
+                addAttendant(attendantName); // creates object instances of them
+            });
+        // Display attendants on page
+        attendants.forEach(function(attendant) {
+            const attendantHtml = `
+                <div class="attendant">
+                    <i class="fas fa-user" style="color: ${attendant.color}"></i>
+                    <input type="text" class="editable" value="${attendant.name}">
+                </div>
+            `;
+            $("#attendants").append(attendantHtml);
+        });
+
+
 
         // Hide start prompt
         $("#startPrompt").css("display", "none");
@@ -102,6 +126,8 @@ $(document).ready(function() {
         $("header h1").text(`${$topic}`);
         // Display system options
         $("#sysOptions").removeClass("hidden");
+
+
 
         // use setInterval() to advance progress bar in increments of 100 milliseconds
         let timeLeft = $time;
@@ -121,6 +147,10 @@ $(document).ready(function() {
         }, 100);
     });
 
+
+
+
+
     // ** FLAG PROMPT **
     $("#addFlag").on("click", function() {
         // HTML For flag (max character count is 200 for textarea)
@@ -129,8 +159,8 @@ $(document).ready(function() {
                 <i class="fas fa-flag"></i>
                 <textarea class="editable" rows="1" maxLength="200" placeholder="Something to flag..."></textarea>
                 <div class="contentControls hidden printHidden">
-                    <span class="edit">Edit</span>
-                    <span class="delete">Delete</span>
+                    <i class="fas fa-edit edit" title="Edit"></i>
+                    <i class="fas fa-trash-alt delete" title="Edit"></i>
                 </div>
             </div>
         `;
@@ -142,44 +172,99 @@ $(document).ready(function() {
         $newFlag.find("textarea").focus();
     });
 
-    // ** FLAG SUBMISSION **
-    $("#flags").on("keydown", ".flag textarea", function(event) {
-        // If user presses enter...
-        if (event.which == 13) {
-            // Lock flag text submission
+
+    // ** TASK PROMPT **
+    $("#addTask").on("click", function() {
+        // HTML For task (max character count is 200 for textarea)
+        const taskHtml = `
+            <div class="content task" taskId="">
+                <i class="fas fa-tasks"></i>
+                <textarea class="editable" rows="1" maxLength="200" placeholder="Something to do..."></textarea>
+                <div class="contentControls hidden printHidden">
+                    <div class="addAttendantPrompt hidden"></div>
+                    <i class="fas fa-user-plus addAttendant title="Add Attendant"></i>
+                    <i class="fas fa-edit edit" title="Edit"></i>
+                    <i class="fas fa-trash-alt delete" title="Edit"></i>
+                </div>
+                <div class="assignedAttendants"></div>
+            </div>
+        `;
+
+        // Add HTML into tasks section
+        const $newTask = $("#tasks").append(taskHtml);
+
+        // Set focus on input box inside newly added task
+        $newTask.find("textarea").focus();
+    });
+
+    // ** ASSIGN TO USER **
+    $("section .addAttendant").hover(function() {
+        const $addAttendantPrompt = $(this).siblings(".addAttendantPrompt");
+        $addAttendantPrompt.toggleClass("hidden");
+        console.log("IN");
+
+        attendants.forEach(function(attendant) {
+            $addAttendantPrompt.append(`<span>${attendant.name}</span>`);
+        });
+    }, function() {
+        const $addAttendantPrompt = $(this).siblings(".addAttendantPrompt");
+        $addAttendantPrompt.empty().toggleClass("hidden");
+        console.log("OUT")
+    });
+
+
+    // ** CONTENT SUBMISSION **
+    $("section").on("keydown", "textarea", function(event) {
+        // If user presses enter or ESC...
+        if (event.which === 13 || event.which === 27) {
+            // Lock text submission
             $(this).toggleClass("editable locked").prop("disabled", true);
             // Display edit button
             $(this).siblings(".contentControls").toggleClass("hidden");
+        }
+        // Clear text specifically for ESC
+        if (event.which === 27) {
+            $(this).val("");
+        }
+        // Object creation specifically for tasks and questions
+        if (event.which === 13) {
+
+            // Grabs div for content
+            const $content = $(this).parent();
+            
+            // Task object edit IF task already exists
+            if ($content.prop("taskId") !== undefined) {
+                const existingTask = tasks.filter(task => task.id == $content.prop("taskId"))[0];
+                existingTask.text = $(this).val();
+
+            // Task object creation IF content is a task and doesn't already exist
+            } else if ($content.hasClass("task")) {
+                $content.prop("taskId", taskIdCount);
+                addTask($(this).val());
+            }
         }
 
         // For every other keypress, always update height of textarea box to match height of scroll bar
         // This basically just increases height of textarea in case of line breaks
         else {
-            console.log($(this).prop("scrollHeight"));
             $(this).css("height", `${$(this).prop("scrollHeight")}px`)
         }
     });
 
-    // ** FLAG EDIT **
-    $("#flags").on("click", ".edit", function() {
+    // ** CONTENT EDIT **
+    $("section").on("click", ".edit", function() {
         // Hide content controls
-        $(this).parent().toggleClass("hidden");
-        // Traverse up DOM to find textarea, then make it editable and focus on it
-        $(this).parent().siblings("textarea").toggleClass("editable locked").prop("disabled", false).focus();
+        $(this).parents(".contentControls").toggleClass("hidden");
+        // Select textarea, then make it editable and focus on it
+        $(this).parents(".contentControls").siblings("textarea").toggleClass("editable locked").prop("disabled", false).focus();
     });
 
-    // ** FLAG DELETE **
-    $("#flags").on("click", ".delete", function() {
+    // ** CONTENT DELETE **
+    $("section").on("click", ".delete", function() {
         if (confirm("This will delete your content permanently.\nProceed?")) {
-            $(this).parents(".flag").remove();
+            $(this).parent().parent().remove();
         };
     });
-
-    // ** TASK PROMPT **
-
-    // ** TASK SUBMISSION **
-
-    // ** TASK EDIT **
 
     // Question creation
 
