@@ -311,4 +311,27 @@ $(document).ready(function() {
             $(this).parent().parent().remove();
         };
     });
+
+    // ** RESTART BUTTON **
+    $("#restart").on("click", function() {
+        if (confirm("Are you sure you want to restart your Meetiator meeting?")) {
+            location.reload();
+        }
+    })
+
+    // ** PRINT PDF ** @@INCOMPLETE@@
+    $("#print").on("click", function() {
+        window.print();
+    })
+
+    // ** SAVE PDF ** @@INCOMPLETE@@
+
+    const doc = new jsPDF();
+    
+    $('#save').click(function () {
+        doc.fromHTML($("body").html(), 15, 15, {
+            'width': 170
+        });
+        doc.save('sample-file.pdf');
+    });
 });
