@@ -1,6 +1,6 @@
 # Meetiator
 
-Meetiator mediates your meetings for you, helping you and your team stay on track and on target to your goals. When the meeting ends, you get a pretty report that can be shared as a print-out or PDF.
+Mediates your meetings via a note-taking user interface. When the meeting ends, you and your team walk away with a print-out or PDF for increased accountability and clarity.
 
 ## How it Works
 

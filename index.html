@@ -18,15 +18,20 @@
     <main>
         <!--Starting prompt that disappears upon form submission-->
         <div id="startPrompt" class="wrapper fullPage">
-            <p><span id="appName">Meetiator</span> mediates your meetings for you, helping you and your team stay on track and on target to your goals. When the meeting ends, you get a pretty report that can be shared as a print-out or PDF.</p>
+            <img id="appLogo" alt="Meetiator" src="assets/images/logo.jpeg">
+            <p>Mediates your meetings via a note-taking user interface. When the meeting ends, you and your team walk away with a print-out or PDF for increased accountability and clarity.</p>
             <form autocomplete="off">
-                <input id="topic" class="editable" type="text" placeholder="Topic question..." required>
+                <div id="topicInput">
+                    <h2>Topic:</h2>
+                    <input id="topic" class="editable" type="text" placeholder="Status Update" required>
+                </div>
                 <div id="timeInput">
-                    Meeting time: <input id="time" class="editable" type="number" placeholder="0" required> min
+                    <h2>Meeting Length (min):</h2>
+                    <input id="time" class="editable" type="number" placeholder="60" required>
                 </div>
                 <div id="attendantsInput">
-                        Names of attendants:<br>
-                        <input id="namesOfAttendants" class="editable" type="text" placeholder="Separate with commas" required>
+                    <h2>Names of attendants:</h2>
+                    <input id="namesOfAttendants" class="editable" type="text" placeholder="John, Marie, Arjun" required>
                 </div>
                 <input type="submit" value="START">
             </form>
@@ -34,15 +39,14 @@
 
         <!--System controls that appear after starting prompt-->
         <div id="sysOptions" class="hidden printHidden">
-            <input id="restart" type="button" value="RESTART">
-            <input id="print" type="button" value="PRINT">
-            <input id="pdf" type="button" value="SAVE PDF">
-            <input id="showActions" type="button" value="+">
-            <input id="addTask" type="button" value="Task">
-            <input id="addQuestion" type="button" value="Question">
-            <input id="addFlag" type="button" value="Flag">
-            <input id="addAttendant" type="button" value="Person">
+            <input id="addFlag" type="button" value="+ Flag">
+            <input id="addTask" type="button" value="+ Task">
+            <input id="addQuestion" type="button" value="+ Question">
+            <input id="print" type="button" value="Print">
+            <input id="restart" type="button" value="Restart">
         </div>
+
+        <img id="appLogoFooter" class="hidden" alt="Meetiator" src="assets/images/horizontalLogo.jpg">
         
         <section id="attendants" class="wrapper">
             <!--Attendants go here-->
@@ -50,11 +54,11 @@
         <section id="flags" class="wrapper">
             <!--Flags go here-->
         </section>
-        <section id="questions" class="wrapper">
-            <!--Questions go here-->
-        </section>
         <section id="tasks" class="wrapper">
             <!--Tasks go here-->
+        </section>
+        <section id="questions" class="wrapper">
+            <!--Questions go here-->
         </section>
     </main>
     

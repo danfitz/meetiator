@@ -109,9 +109,9 @@ $(document).ready(function() {
         // Display attendants on page
         attendants.forEach(function(attendant) {
             const attendantHtml = `
-                <div class="attendant">
+                <div class="attendant" attendantId="${attendant.id}">
                     <i class="fas fa-user" style="color: ${attendant.color}"></i>
-                    <input type="text" class="editable" value="${attendant.name}">
+                    <span>${attendant.name}</span>
                 </div>
             `;
             $("#attendants").append(attendantHtml);
@@ -126,15 +126,17 @@ $(document).ready(function() {
         $("header h1").text(`${$topic}`);
         // Display system options
         $("#sysOptions").removeClass("hidden");
+        // Display app logo footer
+        $("#appLogoFooter").removeClass("hidden");
 
 
 
-        // use setInterval() to advance progress bar in increments of 100 milliseconds
+        // use setInterval() to advance progress bar in increments of 10 milliseconds
         let timeLeft = $time;
 
         const progressBar = setInterval(() => {
-            // Decrease timeLeft by 0.1 seconds (100 milliseconds)
-            timeLeft -= 0.1;
+            // Decrease timeLeft by 0.1 seconds (10 milliseconds)
+            timeLeft -= 0.01;
             // Convert difference between $time and timeLeft to percentage
             const timeLeftPercent = 100 - (timeLeft / $time * 100);
             // Update width of progress bar
@@ -144,7 +146,7 @@ $(document).ready(function() {
                 clearInterval(progressBar);
                 // ** ACTIONS TO PERFORM WHEN TIMER ENDS **
             }
-        }, 100);
+        }, 10);
     });
 
 
@@ -153,7 +155,7 @@ $(document).ready(function() {
 
     // ** FLAG PROMPT **
     $("#addFlag").on("click", function() {
-        // HTML For flag (max character count is 200 for textarea)
+        // HTML for flag (max character count is 200 for textarea)
         const flagHtml = `
             <div class="content flag">
                 <i class="fas fa-flag"></i>
@@ -175,7 +177,7 @@ $(document).ready(function() {
 
     // ** TASK PROMPT **
     $("#addTask").on("click", function() {
-        // HTML For task (max character count is 200 for textarea)
+        // HTML for task (max character count is 200 for textarea)
         const taskHtml = `
             <div class="content task" taskId="">
                 <i class="fas fa-tasks"></i>
@@ -197,20 +199,49 @@ $(document).ready(function() {
         $newTask.find("textarea").focus();
     });
 
-    // ** ASSIGN TO USER **
-    $("section .addAttendant").hover(function() {
+    // ** QUESTION PROMPT **
+    $("#addQuestion").on("click", function() {
+        // HTML for question (max character count is 200 for textarea)
+        const questionHtml = `
+            <div class="content question" questionId="">
+                <i class="fas fa-question"></i>
+                <textarea class="editable" rows="1" maxLength="200" placeholder="Something to ask..."></textarea>
+                <div class="contentControls hidden printHidden">
+                    <div class="addAttendantPrompt hidden"></div>
+                    <i class="fas fa-user-plus addAttendant title="Add Attendant"></i>
+                    <i class="fas fa-edit edit" title="Edit"></i>
+                    <i class="fas fa-trash-alt delete" title="Edit"></i>
+                </div>
+                <div class="assignedAttendants"></div>
+            </div>
+        `;
+
+        // Add HTML into question section
+        const $newQuestion = $("#questions").append(questionHtml);
+
+        // Set focus on input box inside newly added question
+        $newQuestion.find("textarea").focus();
+    });
+
+
+
+
+
+    // ** ASSIGN CONTENT TO ATTENDANT ** @@INCOMPLETE@@
+    $("section").on("mouseenter", ".addAttendant", function() {
         const $addAttendantPrompt = $(this).siblings(".addAttendantPrompt");
         $addAttendantPrompt.toggleClass("hidden");
-        console.log("IN");
 
         attendants.forEach(function(attendant) {
             $addAttendantPrompt.append(`<span>${attendant.name}</span>`);
         });
-    }, function() {
+    }).on("mouseleave", ".addAttendant", function() {
         const $addAttendantPrompt = $(this).siblings(".addAttendantPrompt");
         $addAttendantPrompt.empty().toggleClass("hidden");
-        console.log("OUT")
     });
+
+
+
 
 
     // ** CONTENT SUBMISSION **
@@ -232,15 +263,26 @@ $(document).ready(function() {
             // Grabs div for content
             const $content = $(this).parent();
             
-            // Task object edit IF task already exists
-            if ($content.prop("taskId") !== undefined) {
-                const existingTask = tasks.filter(task => task.id == $content.prop("taskId"))[0];
+            // Content object edit IF task already exists
+            if ($content.attr("taskId")) {
+                const existingTask = tasks.filter(task => task.id == $content.attr("taskId"))[0];
                 existingTask.text = $(this).val();
 
-            // Task object creation IF content is a task and doesn't already exist
+            // Content object creation IF content is a task and doesn't already exist
             } else if ($content.hasClass("task")) {
-                $content.prop("taskId", taskIdCount);
+                $content.attr("taskId", taskIdCount);
                 addTask($(this).val());
+            }
+
+            // Content object edit IF question already exists
+            if ($content.attr("questionId")) {
+                const existingQuestion = questions.filter(question => question.id == $content.attr("questionId"))[0];
+                existingQuestion.text = $(this).val();
+
+            // Content object creation IF content is a question and doesn't already exist
+            } else if ($content.hasClass("question")) {
+                $content.attr("questionId", questionIdCount);
+                addQuestion($(this).val());
             }
         }
 
@@ -250,6 +292,10 @@ $(document).ready(function() {
             $(this).css("height", `${$(this).prop("scrollHeight")}px`)
         }
     });
+
+
+
+
 
     // ** CONTENT EDIT **
     $("section").on("click", ".edit", function() {
@@ -265,8 +311,4 @@ $(document).ready(function() {
             $(this).parent().parent().remove();
         };
     });
-
-    // Question creation
-
-    // People creation
 });

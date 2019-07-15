@@ -2,7 +2,7 @@
 
 body {
     /* COLOR VARIABLES */
-    --buttonColor: #096192;
+    --buttonColor: #00ADEF;
     --inputColor: whitesmoke;
     --borderColor: #ddd;
     --flagColor: #c00;
@@ -19,32 +19,38 @@ body {
     width: 80%;
 }
 
+#appLogoFooter {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    width: 100px;
+}
+
 /* GENERAL INPUT STYLING */
 
 input, textarea {
-    font-family: "Open Sans", sans-serif;
     border: none;
     -moz-appearance: textfield;
-    margin: 1rem auto;
     font-size: 1rem;
 }
 
 input[type="submit"], input[type="button"] {
-    font-size: 2rem;
+    padding: 0.5rem;
     color: white;
     background-color: var(--buttonColor);
+    font-size: 2rem;
 }
 
 /* CLASSES FOR DISPLAYING AND HIDING ELEMENTS */
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 
 .fullPage {
     position: absolute;
-    top: 30%;
+    top: 15%;
     left: 10%;
     text-align: justify;
 }
@@ -55,31 +61,32 @@ input[type="submit"], input[type="button"] {
 
 /* START PROMPT STYLING */
 
-#startPrompt form > * {
-    margin: 1rem 0;
-}
-
-#appName {
-    display: block;
-    font-size: 3rem;
-}
-
-#topic {
-    width: 100%;
-    font-size: 3rem;
-}
-
-#timeInput, #attendantsInput {
-    width: 100%;
-}
-
-#time {
-    width: 4rem;
-}
-
-#namesOfAttendants {
-    width: 30rem;
+#appLogo {
+    width: 22rem;
     max-width: 100%;
+}
+
+#startPrompt form {
+    margin-top: 2rem;
+}
+
+#startPrompt h2 {
+    margin: 1rem 0 0 0;
+}
+
+#topic, #time, #namesOfAttendants {
+    font-family: "Open Sans", sans-serif;
+    width: 20rem;
+    max-width: 100%;
+    font-size: 1.5rem;
+}
+
+#topic::placeholder, #time::placeholder, #namesOfAttendants::placeholder {
+    color: #bbb;
+}
+
+#startPrompt input[value="START"] {
+    margin: 3rem 0;
 }
 
 #time::-webkit-inner-spin-button, 
@@ -101,7 +108,7 @@ header {
     position: absolute;
     z-index: -1;
     left: 0;
-    height: 0.25rem;
+    height: 0.35rem;
     width: 0%;
     background-color: var(--buttonColor);
 }
@@ -115,19 +122,26 @@ header h1 {
 /* STYLING FOR SYSTEM OPTIONS */
 
 #sysOptions {
-    position: absolute;
+    position: fixed;
     bottom: 10px;
     right: 10px;
+    z-index: 99;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-end;
+    align-items: flex-end;
 }
 
-
-
-
+#sysOptions input {
+    margin: 0.1rem 0;
+    display: block;
+    font-size: 1rem;
+}
 
 /* CONTENT BLOCKS - GENERAL STYLING */
 
 section {
-    margin: 10rem;
+    margin: 3rem auto !important;
 }
 
 .content {
@@ -136,9 +150,10 @@ section {
     border-width: 0.1px;
     border-style: solid;
     border-color: var(--borderColor);
+    background-color: white;
 }
 
-.fa-flag, .fa-tasks {
+.fa-flag, .fa-tasks, .fa-question {
     padding: 0.5rem;
     color: white;
     position: absolute;
@@ -152,6 +167,9 @@ section {
 .fa-tasks {
     background-color: var(--taskColor);
 }
+.fa-question {
+    background-color: var(--questionColor);
+}
 
 .assignedAttendants {
     position: absolute;
@@ -160,17 +178,16 @@ section {
 }
 
 .addAttendantPrompt {
-    display: inline-block;
+    display: inline;
     background-color: var(--inputColor);
 }
 
 .addAttendantPrompt span {
-    display: inline-block;
-    margin: 0.5rem;
     border: 1px solid var(--borderColor);
 }
 
 .content textarea {
+    margin: 1rem auto;
     display: block;
     width: 95%;
     resize: none;
@@ -204,17 +221,17 @@ section {
     justify-content: center;
 }
 
-#attendants .attendant > input {
+#attendants .attendant > span {
     display: inline-block;
     margin: 0 1rem;
-    width: 8rem;
+    font-size: 1.5rem;
 }
 
 /* CONTENT BLOCKS - STYLING FOR FLAGS */
 
 #flags {
     width: 1000px;
-    max-width: 90%;
+    max-width: 80%;
 }
 
 .flag {
@@ -229,21 +246,29 @@ section {
     border-top-color: var(--taskColor);
 }
 
+/* CONTENT BLOCKS - STYLING FOR QUESTIONS */
+
+.question {
+    border-top-width: 3px;
+    border-top-color: var(--questionColor);
+}
+
 
 
 /* CLASS FOR CHOOSING WHAT ELEMENTS TO HIDE IN PRINT-OUT */
 
 @media print {
     .printHidden {
-        display: none;
+        display: none !important;
     }
 
     .fa-flag {
         color: var(--flagColor);
     }
-}
-
-@page {
-    size: auto;
-    margin: 50px;
+    .fa-tasks {
+        color: var(--taskColor);
+    }
+    .fa-question {
+        color: var(--questionColor);
+    }
 }
